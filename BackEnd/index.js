@@ -14,7 +14,7 @@ mongoose.connect(process.env.DB_URI, {}).then(() => {console.log("Connected to D
   });
 
 const productsController = require("./Controllers/productsController");
-app.use("/adminPanel/products" ,productsController);
+app.use("/adminPanel/products" , productsController);
 
 //a route to get all products even if the user is not logged in
 const usersProductsController = require("./Controllers/usersProductsController");
@@ -32,9 +32,14 @@ app.use("/adminPanel/users", userController);
 const authController = require("./Controllers/authController");
 app.use("/auth", authController);
 
+const cartController = require("./Controllers/cartController");
+app.use("/cart", cartController);
 
+const orderController = require("./Controllers/orderController");
+app.use("/orders", orderController);
 
-
+const analyticsController = require("./Controllers/analyticsController");
+app.use("/analytics", analyticsController);
 
 //http://localhost:PORT/
 app.listen(process.env.PORT, async () => {

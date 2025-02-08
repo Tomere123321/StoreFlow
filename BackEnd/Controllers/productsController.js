@@ -4,9 +4,9 @@ const router = express.Router();
 const jwt = require("../Middleware/token");
 const adminRoutes = require("../Middleware/adminRoutes");
 
-// router.use(jwt, adminRoutes);
+router.use(jwt, adminRoutes);
 
-router.get("/", jwt, adminRoutes, async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const products = await productsService.getAllProducts();
     return res.status(200).json(products);
@@ -16,7 +16,7 @@ router.get("/", jwt, adminRoutes, async (req, res) => {
   }
 });
 
-router.get("/:id", jwt, adminRoutes, async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const product = await productsService.getProductById(id);
@@ -27,7 +27,7 @@ router.get("/:id", jwt, adminRoutes, async (req, res) => {
   }
 });
 
-router.post("/add", jwt, adminRoutes, async (req, res) => {
+router.post("/add", async (req, res) => {
   try {
     const product = req.body;
     const response = await productsService.addProduct(product);
@@ -38,7 +38,7 @@ router.post("/add", jwt, adminRoutes, async (req, res) => {
   }
 });
 
-router.put("/update/:id", jwt, adminRoutes, async (req, res) => {
+router.put("/update/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const product = req.body;
@@ -50,7 +50,7 @@ router.put("/update/:id", jwt, adminRoutes, async (req, res) => {
   }
 });
 
-router.delete("/delete/:id", jwt, adminRoutes, async (req, res) => {
+router.delete("/delete/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const response = await productsService.deleteProduct(id);

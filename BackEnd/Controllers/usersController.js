@@ -4,7 +4,9 @@ const router = express.Router();
 const adminRoutes = require("../Middleware/adminRoutes");
 const jwt = require("../Middleware/token");
 
-router.get("/", jwt, adminRoutes, async (req, res) => {
+router.use(jwt, adminRoutes);
+
+router.get("/", async (req, res) => {
   try {
     const users = await usersService.getAllUsers();
     return res.status(200).json(users);
@@ -14,7 +16,7 @@ router.get("/", jwt, adminRoutes, async (req, res) => {
   }
 });
 
-router.get("/:id", jwt, adminRoutes, async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const user = await usersService.getUserById(id);
@@ -25,7 +27,7 @@ router.get("/:id", jwt, adminRoutes, async (req, res) => {
   }
 });
 
-router.post("/add", jwt, adminRoutes, async (req, res) => {
+router.post("/add", async (req, res) => {
   try {
     const user = req.body;
     const response = await usersService.addUser(user);
@@ -36,7 +38,7 @@ router.post("/add", jwt, adminRoutes, async (req, res) => {
   }
 });
 
-router.put("/update/:id", jwt, adminRoutes, async (req, res) => {
+router.put("/update/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const user = req.body;
@@ -48,7 +50,7 @@ router.put("/update/:id", jwt, adminRoutes, async (req, res) => {
   }
 });
 
-router.delete("/delete/:id", jwt, adminRoutes, async (req, res) => {
+router.delete("/delete/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const response = await usersService.deleteUser(id);
@@ -58,6 +60,5 @@ router.delete("/delete/:id", jwt, adminRoutes, async (req, res) => {
     res.status(500).json(error.message);
   }
 });
-
 
 module.exports = router;
