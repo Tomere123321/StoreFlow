@@ -1,8 +1,12 @@
 const productsService = require("../Services/ProductsService");
 const express = require("express");
 const router = express.Router();
+const jwt = require("../Middleware/token");
+const adminRoutes = require("../Middleware/adminRoutes");
 
-router.get("/", async (req, res) => {
+// router.use(jwt, adminRoutes);
+
+router.get("/", jwt, adminRoutes, async (req, res) => {
   try {
     const products = await productsService.getAllProducts();
     return res.status(200).json(products);
@@ -12,7 +16,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", jwt, adminRoutes, async (req, res) => {
   try {
     const { id } = req.params;
     const product = await productsService.getProductById(id);
@@ -23,7 +27,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/add", async (req, res) => {
+router.post("/add", jwt, adminRoutes, async (req, res) => {
   try {
     const product = req.body;
     const response = await productsService.addProduct(product);
@@ -34,7 +38,7 @@ router.post("/add", async (req, res) => {
   }
 });
 
-router.put("/update/:id", async (req, res) => {
+router.put("/update/:id", jwt, adminRoutes, async (req, res) => {
   try {
     const { id } = req.params;
     const product = req.body;
@@ -46,13 +50,36 @@ router.put("/update/:id", async (req, res) => {
   }
 });
 
-router.delete("/delete/:id", async (req, res) => {
+router.delete("/delete/:id", jwt, adminRoutes, async (req, res) => {
   try {
     const { id } = req.params;
     const response = await productsService.deleteProduct(id);
     return res.status(200).json(response);
   } catch (error) {
     console.log("error in delete product", error.message);
+    res.status(500).json(error.message);
+  }
+});
+
+//route for everyone to see all products
+router.get("/products", async (req, res) => {
+  try {
+    const products = await productsService.getAllProducts();
+    return res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json(error.message);
+    console.log("error in get all products", error.message);
+  }
+});
+
+//route for everyone to see a product by id
+router.get("/products/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await productsService.getProductById(id);
+    return res.status(200).json(product);
+  } catch (error) {
+    console.log("error in get product by id", error.message);
     res.status(500).json(error.message);
   }
 });

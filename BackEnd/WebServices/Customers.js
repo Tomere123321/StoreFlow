@@ -6,7 +6,7 @@ const fetchCustomers = async () => {
     const existingCustomersCount = await CustomersModel.countDocuments();
 
     if (existingCustomersCount > 0) {
-      console.log("Customers already fetched to the database");
+      console.log("Customers already exist in the database");
       return;
     }
     const response = await axios.get("https://dummyjson.com/users");

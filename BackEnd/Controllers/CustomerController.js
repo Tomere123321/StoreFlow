@@ -1,6 +1,10 @@
 const customerService = require("../Services/CustomersService");
 const express = require("express");
 const router = express.Router();
+const jwt = require("../Middleware/token");
+const adminRoutes = require("../Middleware/adminRoutes");
+
+router.use(jwt, adminRoutes);
 
 router.get("/", async (req, res) => {
   try {

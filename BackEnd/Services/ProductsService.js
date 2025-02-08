@@ -9,7 +9,7 @@ const getProductById = async (id) => {
 };
 
 const addProduct = async (product) => {
- const newProduct =  new ProductsModel(product);
+ const newProduct = new ProductsModel(product);
   await newProduct.save();
   return "Product added successfully";
 };
