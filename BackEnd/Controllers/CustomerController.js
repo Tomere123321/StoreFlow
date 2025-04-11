@@ -12,7 +12,7 @@ router.get("/", async (req, res) => {
     return res.status(200).json(customers);
   } catch (error) {
     res.status(500).json(error.message);
-    console.log("ror in get all customers", error.message);
+    console.log("error in get all customers", error.message);
   }
 });
 
